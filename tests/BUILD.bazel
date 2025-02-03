@@ -1,0 +1,13 @@
+load("//:cython_library.bzl", "cython_library")
+
+cython_library(
+    name = "dummy",
+    srcs = ["dummy.pyx"],
+)
+
+py_test(
+    name = "tests",
+    srcs = glob(["*.py"]),
+    main = "test_dummy_fn.py",
+    deps = [":dummy"],
+)

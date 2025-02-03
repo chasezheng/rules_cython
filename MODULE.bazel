@@ -1,0 +1,47 @@
+module(
+    name = "rules_cython",
+    version = "0.0.1",
+)
+
+bazel_dep(
+    name = "rules_python",
+    version = "1.1.0",
+    dev_dependency = True,
+)
+
+testing_python = use_extension("@rules_python//python/extensions:python.bzl", "python")
+testing_python.toolchain(
+    configure_coverage_tool = True,
+    is_default = True,
+    python_version = "3.12",
+)
+use_repo(testing_python)
+
+http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+http_archive(
+    name = "cython",
+    build_file_content = """
+py_binary(
+    name = "cython_compile",
+    srcs = glob(
+        ["Cython/**/*.py"],
+        exclude = [
+            "**/Tests/*.py",
+        ],
+    ) + ["cython.py"],
+    data = glob([
+        "Cython/**/*.pyx",
+        "Cython/Utility/*.*",
+        "Cython/Includes/**/*.pxd",
+    ]),
+    main = "cython.py",
+    srcs_version = "PY2AND3",
+    visibility = ["//visibility:public"],
+)""",
+    sha256 = "00f97476cef9fcd9a89f9d2a49be3b518e1a74b91f377fe08c97fcb44bc0f7d7",
+    strip_prefix = "cython-3.0.10",
+    urls = [
+        "https://github.com/cython/cython/archive/3.0.10.tar.gz",
+    ],
+)
