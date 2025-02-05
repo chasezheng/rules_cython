@@ -22,8 +22,10 @@ http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "ht
 http_archive(
     name = "cython",
     build_file_content = """
-py_binary(
-    name = "cython_compile",
+exports_files(['cython.py'])
+
+py_library(
+    name = "py_library",
     srcs = glob(
         ["Cython/**/*.py"],
         exclude = [
@@ -35,10 +37,11 @@ py_binary(
         "Cython/Utility/*.*",
         "Cython/Includes/**/*.pxd",
     ]),
-    main = "cython.py",
+    #main = "cython.py",
     srcs_version = "PY2AND3",
     visibility = ["//visibility:public"],
 )""",
+    dev_dependency = False,
     sha256 = "00f97476cef9fcd9a89f9d2a49be3b518e1a74b91f377fe08c97fcb44bc0f7d7",
     strip_prefix = "cython-3.0.10",
     urls = [
