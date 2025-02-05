@@ -9,7 +9,11 @@ bazel_dep(
     dev_dependency = True,
 )
 
-testing_python = use_extension("@rules_python//python/extensions:python.bzl", "python")
+testing_python = use_extension(
+    "@rules_python//python/extensions:python.bzl",
+    "python",
+    dev_dependency = True,
+)
 testing_python.toolchain(
     configure_coverage_tool = True,
     is_default = True,
@@ -23,7 +27,7 @@ http_archive(
     name = "cython",
     build_file_content = """
 py_binary(
-    name = "cython_compile",
+    name = "compiler",
     srcs = glob(
         ["Cython/**/*.py"],
         exclude = [
@@ -39,6 +43,7 @@ py_binary(
     srcs_version = "PY2AND3",
     visibility = ["//visibility:public"],
 )""",
+    dev_dependency = False,
     sha256 = "00f97476cef9fcd9a89f9d2a49be3b518e1a74b91f377fe08c97fcb44bc0f7d7",
     strip_prefix = "cython-3.0.10",
     urls = [

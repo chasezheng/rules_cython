@@ -2,12 +2,24 @@ load("//:cython_library.bzl", "cython_library")
 
 cython_library(
     name = "dummy",
-    srcs = ["dummy.pyx"],
+    srcs = [
+        "dummy.pxd",
+        "dummy.pyx",
+    ],
+)
+
+cython_library(
+    name = "dummy_import",
+    srcs = ["dummy_import.pyx"],
+    pyx_deps = [":dummy"],
 )
 
 py_test(
     name = "tests",
     srcs = glob(["*.py"]),
     main = "test_dummy_fn.py",
-    deps = [":dummy"],
+    deps = [
+        ":dummy",
+        ":dummy_import",
+    ],
 )
