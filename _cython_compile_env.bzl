@@ -14,6 +14,7 @@ def _cython_compile_env_impl(ctx):
             arguments = [init_pxd.path],
             outputs = [init_pxd],
         )
+        includes = depset([init_pxd.root.path], transitive = [includes])
         pxd_files = depset([init_pxd] + ctx.files.pxd_srcs, transitive = [pxd_files])
 
     return CythonCompileInfo(

@@ -24,7 +24,7 @@ def _cython_compile_impl(ctx):
     if compiler_directive_joined:
         args.add("-X", compiler_directive_joined)
     args.add("-I.")
-    args.add_all("-I", ctx.attr.compile_env[CythonCompileInfo].includes)
+    args.add_all(ctx.attr.compile_env[CythonCompileInfo].includes, before_each = "-I")
     args.add("--cplus", ctx.file.pyx)
     args.add("--module-name", get_py_module_name(ctx.label, ctx.file.pyx.basename))
     args.add("--output", output_cpp)
