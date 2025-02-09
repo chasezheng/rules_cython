@@ -1,4 +1,4 @@
-load("//:_common.bzl", "get_py_module_name", "make_label", "remove_file_name_extension")
+load("//:_common.bzl", "get_py_module_name", "remove_file_name_extension")
 load("//:_cython_compile.bzl", "cython_compile")
 load("//:_cython_compile_env.bzl", "cython_compile_env")
 
@@ -88,7 +88,7 @@ def cython_library(
             name = stem + ".compile",
             compiler_directives = compiler_directives,
             pyx = filename,
-            compile_env = _get_pxds_target_name(name).name,
+            compile_env = _get_pxds_target_name(name),
             visibility = ["//visibility:private"],
         )
         native.cc_binary(
@@ -124,9 +124,10 @@ def _update_dict(base, update):
     return base
 
 def _get_pxds_target_name(pyx_target):
-    pyx_target = make_label(pyx_target)
-    return pyx_target.relative(":%s.pxds" % pyx_target.name)
+    pyx_target = native.package_relative_label(pyx_target)
+    out = pyx_target.relative(":%s.pxds" % pyx_target.name)
+    return out
 
 def _get_cc_target_name(pyx_target):
-    pyx_target = make_label(pyx_target)
+    pyx_target = native.package_relative_label(pyx_target)
     return pyx_target.relative(":%s.cc.deps" % pyx_target.name)

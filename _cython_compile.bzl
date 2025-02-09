@@ -1,4 +1,4 @@
-load("//:_common.bzl", "get_py_module_name", "make_label", "remove_file_name_extension")
+load("//:_common.bzl", "get_py_module_name", "remove_file_name_extension")
 load("//:_cython_compile_env.bzl", "CythonCompileInfo")
 
 def _cython_compile_impl(ctx):
